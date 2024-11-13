@@ -2,11 +2,11 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
-const userController = require("../controllers/userControllers") // Correct path to modules
-const jwtAuthMiddleware = require("../middlewares/jwtMiddleware")
-
-
+const { loginUser, registerUser, getUserProfile, updateUserProfile } = require("../controllers/userControllers") // Correct path to modules
+const {validateJwtToken} = require("../middlewares/jwtMiddleware");
 // Register a new user
-router.post("/login", jwtAuthMiddleware.generateJwtToken, userController.loginUser);
-router.post("/register", userController.registerUser);
+router.post("/login", loginUser);
+router.post("/register", registerUser);
+router.get("/myaccount",validateJwtToken,  getUserProfile);
+router.patch("/update", updateUserProfile);
 module.exports = router;
