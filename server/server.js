@@ -41,7 +41,7 @@ app.set('view engine', 'hbs');
 
 let imageUrls = [];
 
-// app.use('/api/register', require("./routes/userRoutes"));
+app.use('/api/register', require("./routes/userRoutes"));
 app.use("/api/doctors", require("./routes/doctorRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use(errorHandler);
@@ -85,6 +85,20 @@ app.post("/profile", upload.single("avatar"), function(req, res, next) {
     return res.render("allimages", {
         imageUrls: imageUrls
     });
+});
+
+// Route for multiple file upload
+app.post('/photos/upload', upload.array('photos', 12), (req, res, next) => {
+    if (req.files && req.files.length > 0) {
+        console.log(req.files); // Log the uploaded files array
+        // Loop through the uploaded files and create URLs
+        const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+        // Pass the image URLs to the Handlebars view
+        return res.render("allimages", {
+            imageUrls: imageUrls
+        });
+    }
+    res.status(400).json({ message: "File upload failed" });
 });
 
 

@@ -8,5 +8,5 @@ const {validateJwtToken} = require("../middlewares/jwtMiddleware");
 router.post("/login", loginUser);
 router.post("/register", registerUser);
 router.get("/myaccount",validateJwtToken,  getUserProfile);
-router.patch("/update", updateUserProfile);
+router.patch("/update", validateJwtToken, updateUserProfile);
 module.exports = router;
